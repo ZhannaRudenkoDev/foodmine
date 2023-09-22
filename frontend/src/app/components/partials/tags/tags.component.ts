@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Tag } from "../../shared/models/Tag";
 import { FoodService } from "../../../services/food.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-tags',
@@ -9,7 +10,7 @@ import { FoodService } from "../../../services/food.service";
 })
 export class TagsComponent implements OnInit {
 
-  tags?: Tag[] = [];
+  tags?: Observable<Tag[]>;
 
   constructor(private foodService: FoodService) {
   }

@@ -1,48 +1,53 @@
-<app-not-found
-  [visible]="!food.id"
-  notFoundMessage="Food Not Found!"
-  resetLinkText="Back To Homepage"
-></app-not-found>
-<div *ngIf="food.id" class="container">
-  <img [src]="food.imageUrl" [alt]="food.name"/>
-  <div class="details">
-    <div class="header">
+<ng-container *ngIf="food | async as foodItem">
+  <div *ngIf="foodItem.id; else noData" class="container">
+    <img [src]="foodItem.imageUrl" [alt]="foodItem.name"/>
+    <div class="details">
+      <div class="header">
       <span class="name">
-        {{food.name}}
+        {{foodItem.name}}
       </span>
-      <span class="favorite {{food.favorite? '': 'not'}}">❤</span>
-    </div>
-    <div class="rating">
-      <star-rating
-        [value]="food.stars"
-        size="22px"
-      />
-    </div>
+        <span class="favorite {{foodItem.favorite? '': 'not'}}">❤</span>
+      </div>
+      <div class="rating">
+        <star-rating
+          [value]="foodItem.stars"
+          size="22px"
+        />
+      </div>
 
-    <div class="origins">
-      <span *ngFor="let origin of food.origins">
+      <div class="origins">
+      <span *ngFor="let origin of foodItem.origins">
         {{origin}}
       </span>
-    </div>
+      </div>
 
-    <div class="tags">
-      <a *ngFor="let tag of food.tags" routerLink="/tag/{{tag}}">
-        {{tag}}
-      </a>
-    </div>
+      <div class="tags">
+        <a *ngFor="let tag of foodItem.tags" routerLink="/tag/{{tag}}">
+          {{tag}}
+        </a>
+      </div>
 
-    <div class="cook-time">
+      <div class="cook-time">
       <span>
-        Time to cook about <strong>{{food.cookTime}}</strong> minutes
+        Time to cook about <strong>{{foodItem.cookTime}}</strong> minutes
       </span>
-    </div>
+      </div>
 
-    <div class="price">
+      <div class="price">
       <span>
-        {{food.price | currency}}
+        {{foodItem.price | currency}}
       </span>
-    </div>
+      </div>
 
-    <button (click)="addToCart()">Add To Cart</button>
+      <button (click)="addToCart()">Add To Cart</button>
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #noData>
+  <app-not-found
+    [visible]="true"
+    notFoundMessage="Food Not Found!"
+    resetLinkText="Back To Homepage"
+  ></app-not-found>
+</ng-template>
