@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl } from "@angular/forms";
-import { Subject } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 const VALIDATORS_MESSAGES: any = {
   required:'Should not be empty',
@@ -28,10 +28,14 @@ export class InputValidationComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.control.statusChanges.subscribe(() => {
+    this.control.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
       this.checkValidation();
     });
-    this.control.valueChanges.subscribe(() => {
+    this.control.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
       this.checkValidation();
     })
   }
